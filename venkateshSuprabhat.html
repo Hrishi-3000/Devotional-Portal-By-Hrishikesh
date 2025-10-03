@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sri Venkateswara Suprabhatam Scroller</title>
+  <style>
+    body {
+      font-family: "Noto Sans Devanagari", Arial, sans-serif;
+      text-align: center;
+      background: #f5f3e7;
+      color: #222;
+      padding: 20px;
+    }
+
+    h1 {
+      color: darkred;
+    }
+
+    #lyrics-box {
+      width: 60%;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid darkred;
+      border-radius: 12px;
+      background: #fffbe6;
+      font-size: 1.3em;
+      min-height: 120px;
+      line-height: 1.8em;
+      transition: all 0.5s ease;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #playPause {
+      background: darkred;
+      color: white;
+    }
+
+    #reset {
+      background: goldenrod;
+      color: white;
+    }
+
+    .controls {
+      margin-top: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    input[type="range"] {
+      width: 200px;
+    }
+    .back {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 15px;
+  background: darkred;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.back:hover {
+  background: maroon;
+}
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #fffbe6;
+  border-top: 2px solid darkred;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 8px;
+}
+
+footer a {
+  color: darkred;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <h1>॥ श्रीवेङ्कटेश सुप्रभातम् ॥</h1>
+
+  <div id="lyrics-box">Click play to start scrolling...</div>
+
+  <button id="playPause">▶ Play</button>
+  <button id="reset">🔄 Reset Counter</button>
+
+  <h3>Played Count: <span id="count">0</span></h3>
+
+  <div class="controls">
+    <label for="speed">Scroll Speed:</label>
+    <input type="range" id="speed" min="2000" max="8000" step="500" value="4000">
+    <span id="speedValue">4s</span>
+  </div>
+
+  <script>
+    // Hanuman Chalisa Lyrics (each line separate)
+   const lyrics = [
+  "kausalyā suprajā rāma pūrvāsandhyā pravartatē ।",
+  "uttiṣṭha naraśārdūla kartavyaṃ daivamāhnikam ॥ 1 ॥",
+  "uttiṣṭhōttiṣṭha gōvinda uttiṣṭha garuḍadhvaja ।",
+  "uttiṣṭha kamalākānta trailōkyaṃ maṅgaḻaṃ kuru ॥ 2 ॥",
+  "mātassamasta jagatāṃ madhukaiṭabhārēḥ",
+  "vakṣōvihāriṇi manōhara divyamūrtē ।",
+  "śrīsvāmini śritajanapriya dānaśīlē",
+  "śrī vēṅkaṭēśa dayitē tava suprabhātam ॥ 3 ॥",
+  "tava suprabhātamaravinda lōchanē",
+  "bhavatu prasannamukha chandramaṇḍalē ।",
+  "vidhi śaṅkarēndra vanitābhirarchitē",
+  "vṛśa śailnātha dayitē dayānidhē ॥ 4 ॥",
+  "atryādi sapta ṛṣayassamupāsya sandhyāṃ",
+  "ākāśa sindhu kamalāni manōharāṇi ।",
+  "ādāya pādayuga marchayituṃ prapannāḥ",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 5 ॥",
+  "pañchānanābja bhava ṣaṇmukha vāsavādyāḥ",
+  "traivikramādi charitaṃ vibudhāḥ stuvanti ।",
+  "bhāṣāpatiḥ paṭhati vāsara śuddhi mārāt",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 6 ॥",
+  "īśat-praphulla sarasīruha nārikēḻa",
+  "pūgadrumādi sumanōhara pālikānām ।",
+  "āvāti mandamanilaḥ sahadivya gandhaiḥ",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 7 ॥",
+  "unmīlyanētra yugamuttama pañjarasthāḥ",
+  "pātrāvasiṣṭa kadalī phala pāyasāni ।",
+  "bhuktvāḥ salīla mathakēḻi śukāḥ paṭhanti",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 8 ॥",
+  "tantrī prakarṣa madhura svanayā vipañchyā",
+  "gāyatyananta charitaṃ tava nāradō'pi ।",
+  "bhāṣā samagra masat-kṛtachāru ramyaṃ",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 9 ॥",
+  "bhṛṅgāvaḻī cha makaranda rasānu viddha",
+  "jhuṅkāragīta ninadaiḥ sahasēvanāya ।",
+  "niryātyupānta sarasī kamalōdarēbhyaḥ",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 10 ॥",
+  "yōṣāgaṇēna varadadhni vimathyamānē",
+  "ghōṣālayēṣu dadhimanthana tīvraghōṣāḥ ।",
+  "rōṣātkaliṃ vidadhatē kakubhaścha kumbhāḥ",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 11 ॥",
+  "padmēśamitra śatapatra gatāḻivargāḥ",
+  "hartuṃ śriyaṃ kuvalayasya nijāṅgalakṣmyāḥ ।",
+  "bhērī ninādamiva bhibhrati tīvranādam",
+  "śēṣādri śēkhara vibhō tava suprabhātam ॥ 12 ॥",
+  "śrīmannabhīṣṭa varadākhila lōka bandhō",
+  "śrī śrīnivāsa jagadēka dayaika sindhō ।",
+  "śrī dēvatā gṛha bhujāntara divyamūrtē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 13 ॥",
+  "śrī svāmi puṣkariṇikāplava nirmalāṅgāḥ",
+  "śrēyārthinō haraviriñchi sanandanādyāḥ ।",
+  "dvārē vasanti varanētra hatōtta māṅgāḥ",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 14 ॥",
+  "śrī śēṣaśaila garuḍāchala vēṅkaṭādri",
+  "nārāyaṇādri vṛṣabhādri vṛṣādri mukhyām ।",
+  "ākhyāṃ tvadīya vasatē raniśaṃ vadanti",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 15 ॥",
+  "sēvāparāḥ śiva surēśa kṛśānudharma",
+  "rakṣōmbunātha pavamāna dhanādhi nāthāḥ ।",
+  "baddhāñjali pravilasannija śīrṣadēśāḥ",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 16 ॥",
+  "dhāṭīṣu tē vihagarāja mṛgādhirāja",
+  "nāgādhirāja gajarāja hayādhirājāḥ ।",
+  "svasvādhikāra mahimādhika marthayantē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 17 ॥",
+  "sūryēndu bhauma budhavākpati kāvyaśauri",
+  "svarbhānukētu diviśat-pariśat-pradhānāḥ ।",
+  "tvaddāsadāsa charamāvadhi dāsadāsāḥ",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 18 ॥",
+  "tat-pādadhūḻi bharita sphuritōttamāṅgāḥ",
+  "svargāpavarga nirapēkṣa nijāntaraṅgāḥ ।",
+  "kalpāgamā kalanayā''kulatāṃ labhantē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 19 ॥",
+  "tvadgōpurāgra śikharāṇi nirīkṣamāṇāḥ",
+  "svargāpavarga padavīṃ paramāṃ śrayantaḥ ।",
+  "martyā manuṣya bhuvanē matimāśrayantē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 20 ॥",
+  "śrī bhūmināyaka dayāadi guṇāmṛtābdē",
+  "dēvādidēva jagadēka śaraṇyamūrtē ।",
+  "śrīmannananta garuḍādibhi rarchitāṅghrē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 21 ॥",
+  "śrī padmanābha puruṣōttama vāsudēva",
+  "vaikuṇṭha mādhava janārdhana chakrapāṇē ।",
+  "śrī vatsa chihna śaraṇāgata pārijāta",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 22 ॥",
+  "kandarpa darpa hara sundara divya mūrtē",
+  "kāntā kuchāmburuha kuṭmala lōladṛṣṭē ।",
+  "kalyāṇa nirmala guṇākara divyakīrtē",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 23 ॥",
+  "mīnākṛtē kamaṭhakōla nṛsiṃha varṇin",
+  "svāmin paraśvatha tapōdhana rāmachandra ।",
+  "śēṣāṃśarāma yadunandana kalkirūpa",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 24 ॥",
+  "ēlālavaṅga ghanasāra sugandhi tīrthaṃ",
+  "divyaṃ viyatsariti hēmaghaṭēṣu pūrṇam ।",
+  "dhṛtvādya vaidika śikhāmaṇayaḥ prahṛṣṭāḥ",
+  "tiṣṭhanti vēṅkaṭapatē tava suprabhātam ॥ 25 ॥",
+  "bhāsvānudēti vikachāni sarōruhāṇi",
+  "sampūrayanti ninadaiḥ kakubhō vihaṅgāḥ ।",
+  "śrīvaiṣṇavāḥ satata marthita maṅgaḻāstē",
+  "dhāmāśrayanti tava vēṅkaṭa suprabhātam ॥ 26 ॥",
+  "brahmādaya-ssuravarā-ssamaharṣayastē",
+  "santassanandana-mukhāstvatha yōgivaryāḥ ।",
+  "dhāmāntikē tava hi maṅgaḻavastuhastāḥ",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 27 ॥",
+  "lakśmīnivāsa niravadya guṇaika sindhō",
+  "saṃsārasāgara samuttaraṇaika sētō ।",
+  "vēdānta vēdya nijavaibhava bhakta bhōgya",
+  "śrī vēṅkaṭāchalapatē tava suprabhātam ॥ 28 ॥",
+  "itthaṃ vṛṣāchalapatēriha suprabhātaṃ",
+  "yē mānavāḥ pratidinaṃ paṭhituṃ pravṛttāḥ ।",
+  "tēṣāṃ prabhāta samayē smṛtiraṅgabhājāṃ",
+  "prajñāṃ parārtha sulabhāṃ paramāṃ prasūtē ॥ 29 ॥"
+];
+
+    let index = 0;
+    let isPlaying = false;
+    let interval;
+    let playCount = 0;
+    let speed = 8000; // default 4s
+
+    const lyricsBox = document.getElementById("lyrics-box");
+    const playPauseBtn = document.getElementById("playPause");
+    const countSpan = document.getElementById("count");
+    const speedInput = document.getElementById("speed");
+    const speedValue = document.getElementById("speedValue");
+
+    function showLyrics() {
+      if (index >= lyrics.length) {
+        clearInterval(interval);
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        index = 0;
+        playCount++;
+        countSpan.textContent = playCount;
+        return;
+      }
+      // Show 3 lines at a time
+      let lines = lyrics.slice(index, index + 3).join("<br>");
+      lyricsBox.innerHTML = lines;
+      index += 3;
+    }
+
+    function startScrolling() {
+      clearInterval(interval);
+      showLyrics();
+      interval = setInterval(showLyrics, speed);
+    }
+
+    playPauseBtn.addEventListener("click", () => {
+      if (!isPlaying) {
+        isPlaying = true;
+        playPauseBtn.textContent = "⏸ Pause";
+        startScrolling();
+      } else {
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        clearInterval(interval);
+      }
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      playCount = 0;
+      countSpan.textContent = playCount;
+    });
+
+    speedInput.addEventListener("input", () => {
+      speed = parseInt(speedInput.value);
+      speedValue.textContent = (speed / 1000) + "s";
+      if (isPlaying) {
+        startScrolling(); // restart with new speed
+      }
+    });
+  </script>
+  <footer>
+  <p>  Connect with me:</p>
+  <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
+  <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
+  <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
+  <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
+</footer>
+
+</body>
+<a href="venkatesh.html" class="back">⬅ Back to Home</a>
+</html>

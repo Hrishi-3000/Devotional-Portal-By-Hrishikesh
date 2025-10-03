@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sri Venkateswara Suprabhatam Scroller</title>
+  <style>
+    body {
+      font-family: "Noto Sans Devanagari", Arial, sans-serif;
+      text-align: center;
+      background: #f5f3e7;
+      color: #222;
+      padding: 20px;
+    }
+
+    h1 {
+      color: darkred;
+    }
+
+    #lyrics-box {
+      width: 60%;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid darkred;
+      border-radius: 12px;
+      background: #fffbe6;
+      font-size: 1.3em;
+      min-height: 120px;
+      line-height: 1.8em;
+      transition: all 0.5s ease;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #playPause {
+      background: darkred;
+      color: white;
+    }
+
+    #reset {
+      background: goldenrod;
+      color: white;
+    }
+
+    .controls {
+      margin-top: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    input[type="range"] {
+      width: 200px;
+    }
+    .back {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 15px;
+  background: darkred;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.back:hover {
+  background: maroon;
+}
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #fffbe6;
+  border-top: 2px solid darkred;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 8px;
+}
+
+footer a {
+  color: darkred;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <h1>॥ मारुती स्तोत्र ॥</h1>
+
+  <div id="lyrics-box">Click play to start scrolling...</div>
+
+  <button id="playPause">▶ Play</button>
+  <button id="reset">🔄 Reset Counter</button>
+
+  <h3>Played Count: <span id="count">0</span></h3>
+
+  <div class="controls">
+    <label for="speed">Scroll Speed:</label>
+    <input type="range" id="speed" min="2000" max="8000" step="500" value="4000">
+    <span id="speedValue">4s</span>
+  </div>
+
+  <script>
+    // Hanuman Chalisa Lyrics (each line separate)
+   const lyrics = [
+  "भीमरूपी महारुद्रा, वज्रहनुमान मारुती |",
+  "वनारी अंजनीसूता रामदूता प्रभंजना ||१||",
+  "महाबळी प्राणदाता, सकळां उठवी बळें |",
+  "सौख्यकारी दुःखहारी, दुत वैष्णव गायका ||२||",
+  "दीनानाथा हरीरूपा, सुंदरा जगदांतरा |",
+  "पाताळदेवताहंता, भव्यसिंदूरलेपना ||३||",
+  "लोकनाथा जगन्नाथा, प्राणनाथा पुरातना |",
+  "पुण्यवंता पुण्यशीला, पावना परितोषका ||४||",
+  "ध्वजांगे उचली बाहो, आवेशें लोटला पुढें |",
+  "काळाग्नी काळरुद्राग्नी, देखतां कांपती भयें ||५||",
+  "ब्रह्मांडे माईलें नेणों, आवळे दंतपंगती |",
+  "नेत्राग्नीं चालिल्या ज्वाळा, भ्रुकुटी ताठिल्या बळें ||६||",
+  "पुच्छ ते मुरडिले माथा, किरीटी कुंडले बरीं |",
+  "सुवर्ण कटी कांसोटी, घंटा किंकिणी नागरा ||७||",
+  "ठकारे पर्वता ऐसा, नेटका सडपातळू |",
+  "चपळांग पाहतां मोठे, महाविद्युल्लतेपरी ||८||",
+  "कोटिच्या कोटि उड्डाणें, झेपावे उत्तरेकडे |",
+  "मंद्राद्रीसारिखा द्रोणू, क्रोधें उत्पाटिला बळें ||९||",
+  "आणिला मागुतीं नेला, आला गेला मनोगती |",
+  "मनासी टाकिलें मागें, गतीसी तुळणा नसे ||१०||",
+  "अणुपासोनि ब्रह्मांडाएवढा होत जातसे |",
+  "तयासी तुळणा कोठे, मेरू मंदार धाकुटे ||११||",
+  "ब्रह्मांडाभोवतें वेढें, वज्रपुच्छें करू शकें |",
+  "तयासी तुळणा कैची, ब्रह्मांडी पाहता नसे ||१२||",
+  "आरक्त देखिलें डोळा, ग्रासिलें सूर्यमंडळा |",
+  "वाढतां वाढतां वाढें, भेदिलें शून्यमंडळा ||१३||",
+  "धनधान्य पशूवृद्धि, पुत्रपौत्र समग्रही |",
+  "पावती रूपविद्यादी, स्तोत्रपाठें करूनियां ||१४||",
+  "भूतप्रेतसमंधादी, रोगव्याधी समस्तही |",
+  "नासती तूटती चिंता, आनंदे भीमदर्शनें ||१५||",
+  "हे धरा पंधरा श्लोकी, लाभली शोभली बरी |",
+  "दृढदेहो निसंदेहो, संख्या चन्द्रकळागुणें ||१६||",
+  "रामदासी अग्रगण्यू, कपिकुळासि मंडणू |",
+  "रामरूपी अंतरात्मा, दर्शनें दोष नासती ||१७||",
+  "॥ इति श्रीरामदासकृतं संकटनिरसनं मारुतिस्तोत्रं संपूर्णम् ॥"
+];
+
+    let index = 0;
+    let isPlaying = false;
+    let interval;
+    let playCount = 0;
+    let speed = 8000; // default 4s
+
+    const lyricsBox = document.getElementById("lyrics-box");
+    const playPauseBtn = document.getElementById("playPause");
+    const countSpan = document.getElementById("count");
+    const speedInput = document.getElementById("speed");
+    const speedValue = document.getElementById("speedValue");
+
+    function showLyrics() {
+      if (index >= lyrics.length) {
+        clearInterval(interval);
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        index = 0;
+        playCount++;
+        countSpan.textContent = playCount;
+        return;
+      }
+      // Show 3 lines at a time
+      let lines = lyrics.slice(index, index + 3).join("<br>");
+      lyricsBox.innerHTML = lines;
+      index += 3;
+    }
+
+    function startScrolling() {
+      clearInterval(interval);
+      showLyrics();
+      interval = setInterval(showLyrics, speed);
+    }
+
+    playPauseBtn.addEventListener("click", () => {
+      if (!isPlaying) {
+        isPlaying = true;
+        playPauseBtn.textContent = "⏸ Pause";
+        startScrolling();
+      } else {
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        clearInterval(interval);
+      }
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      playCount = 0;
+      countSpan.textContent = playCount;
+    });
+
+    speedInput.addEventListener("input", () => {
+      speed = parseInt(speedInput.value);
+      speedValue.textContent = (speed / 1000) + "s";
+      if (isPlaying) {
+        startScrolling(); // restart with new speed
+      }
+    });
+  </script>
+  <footer>
+  <p>  Connect with me:</p>
+  <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
+  <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
+  <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
+  <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
+</footer>
+
+</body>
+<a href="index.html" class="back">⬅ Back to Home</a>
+</html>

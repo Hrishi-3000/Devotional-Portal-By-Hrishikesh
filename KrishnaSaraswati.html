@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Devotional Portal</title>
+  <style>
+    body {
+      font-family: "Noto Sans Devanagari", Arial, sans-serif;
+      text-align: center;
+      background: #f5f3e7;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: darkred;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fffbe6;
+      border: 2px solid darkred;
+      border-radius: 12px;
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .card h2 {
+      margin-top: 12px;
+      font-size: 1.2em;
+      color: darkred;
+    }
+    .back {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 15px;
+  background: darkred;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.back:hover {
+  background: maroon;
+}
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #fffbe6;
+  border-top: 2px solid darkred;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 8px;
+}
+
+footer a {
+  color: darkred;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <h1>🌺 Sri Krishna Saraswati Datta Maharaj 🌺</h1>
+
+  <div class="grid">
+    <div class="card" onclick="location.href='KrishnaSaraswatiAarti.html'">
+      <img src="Asset\l.jpg" alt="KrishnaSaraswatiAarti">
+      <h2>Krishna Saraswati Aarti</h2>
+    </div>
+
+    <div class="card" onclick="location.href='ViddaGhyaO.html'">
+      <img src="Asset\m.jpg" alt="Vidda Ghya O">
+      <h2>Vidda Ghya O</h2>
+    </div>
+
+  </div>
+  <footer>
+  <p>  Connect with me:</p>
+  <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
+  <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
+  <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
+  <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
+</footer>
+
+</body>
+<a href="index.html" class="back">⬅ Back to Home</a>
+</html>

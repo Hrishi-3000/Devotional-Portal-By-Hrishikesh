@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sri Venkateswara Suprabhatam Scroller</title>
+  <style>
+    body {
+      font-family: "Noto Sans Devanagari", Arial, sans-serif;
+      text-align: center;
+      background: #f5f3e7;
+      color: #222;
+      padding: 20px;
+    }
+
+    h1 {
+      color: darkred;
+    }
+
+    #lyrics-box {
+      width: 60%;
+      margin: 20px auto;
+      padding: 20px;
+      border: 2px solid darkred;
+      border-radius: 12px;
+      background: #fffbe6;
+      font-size: 1.3em;
+      min-height: 120px;
+      line-height: 1.8em;
+      transition: all 0.5s ease;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    #playPause {
+      background: darkred;
+      color: white;
+    }
+
+    #reset {
+      background: goldenrod;
+      color: white;
+    }
+
+    .controls {
+      margin-top: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      margin-right: 8px;
+    }
+
+    input[type="range"] {
+      width: 200px;
+    }
+    .back {
+  margin-top: 20px;
+  display: inline-block;
+  padding: 10px 15px;
+  background: darkred;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.back:hover {
+  background: maroon;
+}
+footer {
+  margin-top: 40px;
+  padding: 15px;
+  background: #fffbe6;
+  border-top: 2px solid darkred;
+  font-size: 1em;
+  text-align: center;
+  border-radius: 8px;
+}
+
+footer a {
+  color: darkred;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 8px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+  </style>
+</head>
+<body>
+  <h1>॥ महामृत्युंजय मन्त्रः ॥</h1>
+
+  <div id="lyrics-box">Click play to start scrolling...</div>
+
+  <button id="playPause">▶ Play</button>
+  <button id="reset">🔄 Reset Counter</button>
+
+  <h3>Played Count: <span id="count">0</span></h3>
+
+  <div class="controls">
+    <label for="speed">Scroll Speed:</label>
+    <input type="range" id="speed" min="2000" max="8000" step="500" value="4000">
+    <span id="speedValue">4s</span>
+  </div>
+
+  <script>
+    // Hanuman Chalisa Lyrics (each line separate)
+   const lyrics = [
+  "ॐ त्र्यम्बकं यजामहे",
+  "सुगन्धिं पुष्टिवर्धनम् ।",
+  "उर्वारुकमिव बन्धनान्",
+  "मृत्योर्मुक्षीय मामृतात् ॥"
+];
+
+    let index = 0;
+    let isPlaying = false;
+    let interval;
+    let playCount = 0;
+    let speed = 8000; // default 4s
+
+    const lyricsBox = document.getElementById("lyrics-box");
+    const playPauseBtn = document.getElementById("playPause");
+    const countSpan = document.getElementById("count");
+    const speedInput = document.getElementById("speed");
+    const speedValue = document.getElementById("speedValue");
+
+    function showLyrics() {
+      if (index >= lyrics.length) {
+        clearInterval(interval);
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        index = 0;
+        playCount++;
+        countSpan.textContent = playCount;
+        return;
+      }
+      // Show 3 lines at a time
+      let lines = lyrics.slice(index, index + 3).join("<br>");
+      lyricsBox.innerHTML = lines;
+      index += 3;
+    }
+
+    function startScrolling() {
+      clearInterval(interval);
+      showLyrics();
+      interval = setInterval(showLyrics, speed);
+    }
+
+    playPauseBtn.addEventListener("click", () => {
+      if (!isPlaying) {
+        isPlaying = true;
+        playPauseBtn.textContent = "⏸ Pause";
+        startScrolling();
+      } else {
+        isPlaying = false;
+        playPauseBtn.textContent = "▶ Play";
+        clearInterval(interval);
+      }
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      playCount = 0;
+      countSpan.textContent = playCount;
+    });
+
+    speedInput.addEventListener("input", () => {
+      speed = parseInt(speedInput.value);
+      speedValue.textContent = (speed / 1000) + "s";
+      if (isPlaying) {
+        startScrolling(); // restart with new speed
+      }
+    });
+  </script>
+  <footer>
+  <p>  Connect with me:</p>
+  <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
+  <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
+  <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
+  <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
+</footer>
+
+</body>
+<a href="index.html" class="back">⬅ Back to Home</a>
+</html>
