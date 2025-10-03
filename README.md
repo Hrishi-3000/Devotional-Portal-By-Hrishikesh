@@ -51,6 +51,5 @@ A fully immersive, modern, and interactive devotional web portal featuring Shri 
 
 ---
 
-## 📁 File Structure
 
 
