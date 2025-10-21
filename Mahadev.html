@@ -50,66 +50,142 @@
       font-size: 1.2em;
       color: darkred;
     }
+    
     .back {
-  margin-top: 20px;
-  display: inline-block;
-  padding: 10px 15px;
-  background: darkred;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s ease;
-}
-.back:hover {
-  background: maroon;
-}
-footer {
-  margin-top: 40px;
-  padding: 15px;
-  background: #fffbe6;
-  border-top: 2px solid darkred;
-  font-size: 1em;
-  text-align: center;
-  border-radius: 8px;
-}
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 15px;
+      background: darkred;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    
+    .back:hover {
+      background: maroon;
+    }
+    
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background: #fffbe6;
+      border-top: 2px solid darkred;
+      font-size: 1em;
+      text-align: center;
+      border-radius: 8px;
+    }
 
-footer a {
-  color: darkred;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0 8px;
-}
+    footer a {
+      color: darkred;
+      font-weight: bold;
+      text-decoration: none;
+      margin: 0 8px;
+    }
 
-footer a:hover {
-  text-decoration: underline;
-}
+    footer a:hover {
+      text-decoration: underline;
+    }
 
+    /* Overlay fullscreen */
+    #overlay {
+      display: none; /* hidden initially */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 1000;
+    }
+
+    /* Shivji Vedic frame */
+    .vedic-frame {
+      width: 400px;
+      max-width: 90%;
+      border: 15px solid rgb(182, 73, 0);
+      border-radius: 20px;
+      box-shadow: 0 0 40px 15px rgba(255, 81, 0, 0.7);
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { box-shadow: 0 0 20px 10px rgba(225, 67, 5, 0.885); }
+      to   { box-shadow: 0 0 40px 20px rgb(237, 63, 5); }
+    }
+
+    /* Buttons */
+    .bhajan-btn, .close-btn {
+      margin: 15px;
+      padding: 12px 24px;
+      background: darkred;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .bhajan-btn:hover, .close-btn:hover {
+      background: maroon;
+    }
   </style>
 </head>
 <body>
+  <!-- Hidden audio element -->
+  <audio id="bg-music" loop>
+    <source src="Asset/MahakalArti.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Overlay for immersive Darshan -->
+  <div id="overlay">
+    <img src="Asset/Ujjain.jpg" alt="Shivji" class="vedic-frame">
+    <button class="close-btn" onclick="closeDarshan()">❌ Close Aarti</button>
+  </div>
+
+  <!-- Play Bhajan button -->
+  <button onclick="playBhajan()" class="bhajan-btn">🎶 Play Mahakal Arti</button>
+
   <h1>🌺 Om Namah Shivay Scroller 🌺</h1>
 
   <div class="grid">
-    <div class="card" onclick="location.href='MahaMrityunjayaMantra.html'">
-      <img src="Asset\n.jpg" alt="MahaMrityunjayaMantra">
+    <div class="card" onclick="location.href='MahalvityunjayaMantra.html'">
+      <img src="Asset/n.jpg" alt="MahaMrityunjayaMantra">
       <h2>Maha Mrityunjaya Mantra</h2>
     </div>
 
-    <div class="card" onclick="location.href='ShamaMantra.html'">
-      <img src="Asset\o.jpg" alt="ShamaMantra">
+    <div class="card" onclick="location.href='ShamaiMantra.html'">
+      <img src="Asset/o.jpg" alt="ShamaMantra">
       <h2>Shama Mantra</h2>
     </div>
-
   </div>
+  
   <footer>
-  <p>  Connect with me:</p>
-  <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
-  <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
-  <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
-  <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
-</footer>
+    <p>Connect with me:</p>
+    <a href="https://hrishikesh-shahane-portfolio.vercel.app/" target="_blank">Portfolio</a> |
+    <a href="https://github.com/Hrishi-3000" target="_blank">GitHub</a> |
+    <a href="https://www.linkedin.com/in/hrishikesh-shahane-a0a19a258/" target="_blank">LinkedIn</a> |
+    <a href="https://hrishikeshshahane-aboutme.blogspot.com/p/about-me.html" target="_blank">Blogger</a>
+  </footer>
 
+  <a href="index.html" class="back">⬅ Back to Home</a>
+
+  <script>
+    function playBhajan() {
+      document.getElementById('bg-music').play();
+      document.getElementById('overlay').style.display = 'flex';
+    }
+    
+    function closeDarshan() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('bg-music').pause();
+    }
+  </script>
 </body>
-<a href="index.html" class="back">⬅ Back to Home</a>
 </html>
